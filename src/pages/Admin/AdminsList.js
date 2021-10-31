@@ -1,17 +1,19 @@
 import React, {useState, useEffect} from 'react';
 import {Avatar, Button, List, ListItem, ListItemText, ListItemAvatar, 
         ListItemSecondaryAction, Typography} from '@mui/material';
-import {useSelector} from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
 import {makeStyles} from "@mui/styles";
 
 
 
 import SearchInput from '../../components/SearchInput';
+import {fetchAdmins} from "../../actions/Admin/admins";
 
 
 const AdminList = ({data}) => {
+    const dispatch = useDispatch();
     const classes = useStyles();
-    const admins = useSelector(state => state.admins);
+    const {data: admins, loading} = useSelector(state => state.admins);
     const [searchResults, setSearchResults] = useState([]);
 
     const handleRemove = (id) => {
@@ -31,8 +33,14 @@ const AdminList = ({data}) => {
 
 
      useEffect(() => {
-         console.log("Fetch Admins");
+         dispatch(fetchAdmins());
      }, []);
+
+
+
+    if(loading) return <h1>Loading...</h1>
+    
+
 
     const finalData = searchResults.length ? searchResults : admins;
     return (

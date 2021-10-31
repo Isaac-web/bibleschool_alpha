@@ -1,4 +1,4 @@
-import {ADMIN_ENROLLMENTS_FETCHED} from "../../config/reduxContants";
+import {ADMIN_ENROLLMENTS_FETCHED, LOADING_STARTED, LOADING_STOPPED} from "../../config/reduxContants";
 
 const enrollmentsData = [
     {_id: "_enrollment_1", title: "New Course 1", enrollments: 10, coordinator: "Appiah Agyei 1"},
@@ -14,6 +14,7 @@ const enrollmentsData = [
 
 
 export const fetchEnrollments = () => async dispatch => {
-    console.log("Fetching enrollments...");
+    dispatch({type: LOADING_STARTED});
     dispatch({type: ADMIN_ENROLLMENTS_FETCHED, payload: enrollmentsData})
+    dispatch({type: LOADING_STOPPED});
 }
