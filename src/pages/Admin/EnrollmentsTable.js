@@ -4,6 +4,7 @@ import {useSelector, useDispatch} from 'react-redux';
 
 import AdminTable from "./AdminTable";
 import {fetchEnrollments} from "../../actions/Admin/enrollments";
+import Loading from "../../components/Loading";
 
 
 const CoursesTable = () => {
@@ -31,7 +32,7 @@ const CoursesTable = () => {
     ]
 
     if(loading) {
-        return <h1>Loading</h1>
+        return <Loading/>
     }
     return (
         <>  <Typography variant="h4">Enrollments</Typography>

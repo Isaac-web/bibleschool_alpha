@@ -6,4 +6,5 @@ export default {
     primary: "#277FFE",
     secondary: "#323242",
     white: "#F4FDFF",
+    success: "rgb(14, 194, 14)"
 }

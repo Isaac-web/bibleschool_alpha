@@ -9,7 +9,8 @@ export default createTheme({
             white: colors.white,
             light: colors.light,
             medium: colors.medium,
-            dart: colors.dark
+            dart: colors.dark,
+            success: colors.success
         },
         primary: {
             main: colors.primary

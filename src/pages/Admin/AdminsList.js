@@ -8,6 +8,7 @@ import {makeStyles} from "@mui/styles";
 
 import SearchInput from '../../components/SearchInput';
 import {fetchAdmins} from "../../actions/Admin/admins";
+import Loading from '../../components/Loading';
 
 
 const AdminList = ({data}) => {
@@ -38,8 +39,8 @@ const AdminList = ({data}) => {
 
 
 
-    if(loading) return <h1>Loading...</h1>
     
+    if(loading) return <Loading />;
 
 
     const finalData = searchResults.length ? searchResults : admins;
