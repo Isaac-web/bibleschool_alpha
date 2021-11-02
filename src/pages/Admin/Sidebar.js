@@ -2,17 +2,20 @@ import React, {useState} from 'react';
 import {Paper, Avatar, Grid, Typography, InputBase, InputAdornment} from "@mui/material";
 import {makeStyles} from '@mui/styles';
 import {Settings, Search} from "@mui/icons-material";
+import { useDispatch } from 'react-redux';
 
 
 import GridButton from "./GridButton";
 import AppButton from "../../components/AppButton";
 import MiniDialog from '../../components/Dialog/MiniDialog';
 import UsersList from "./UsersList";
+import {searchUsers} from "../../actions/Users/users";
 
 
 
 
 const Sidebar = () => {
+    const dispatch = useDispatch();
     const classes = useStyles();
     const [openUserDialog, setOpenUsersDialog] = useState(false);
 
@@ -24,9 +27,13 @@ const Sidebar = () => {
     const openUsersDialog = () => {
         setOpenUsersDialog(true);
     }
-    
 
-    const data = [];
+
+    const handleUsersSearch = ({target:input}) => {
+        dispatch(searchUsers(input.value));
+    }
+
+
 
     return (
         <Paper className={classes.sidebarPaper}>
@@ -57,16 +64,21 @@ const Sidebar = () => {
                 open={openUserDialog}
                 Header={
                     <InputBase 
-                        fullWidth
                         autoFocus
-                        startAdornment={<InputAdornment style={{marginRight: 10}}><Search size={30} color="primary"/></InputAdornment>}
+                        fullWidth
+                        onChange={handleUsersSearch}
+                        startAdornment={<InputAdornment 
+                                        style={{marginRight: 10}}
+                                        >
+                                            <Search size={30} color="primary"/>
+                                        </InputAdornment>}
                         placeholder="Search Coordinators..."
                         style={{fontSize: 20}}
                     />
                 }
                 onClose={closeUsersDialog}
             >
-                <UsersList data={data}/>
+                <UsersList/>
             </MiniDialog>
         </Paper>
     )

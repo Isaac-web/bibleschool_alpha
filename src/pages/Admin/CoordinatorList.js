@@ -1,25 +1,27 @@
 import React, {useState, useEffect} from 'react';
-import {Avatar, Button, Box, List, ListItem, ListItemText, ListItemAvatar, ListItemSecondaryAction,Typography} from '@mui/material';
+import {Avatar, Button, Box, List, ListItem, ListItemText, ListItemAvatar, 
+    ListItemSecondaryAction,Typography} from '@mui/material';
 
 import {useSelector, useDispatch} from "react-redux";
 
 import {makeStyles} from "@mui/styles";
 import SearchInput from '../../components/SearchInput';
 import Loading from '../../components/Loading';
+import {fetchCoordinators} from "../../actions/Admin/coordinators";
 
 
 const CoordinatorList = () => {
     const classes = useStyles();
-    const {data: coordinators, loading} = useSelector(state => state.adminCoordinators);
+    const dispatch = useDispatch();
     const [searchResults, setSearchResults] = useState([]);
+
+    const {data: coordinators, loading} = useSelector(state => state.coordinators);
 
 
     const handleRemove = (id) => {
         console.log(id);
     }
 
-
-    const state = useSelector(state => state.adminCoordinators)
 
 
     const formatText = (text) => {
@@ -31,14 +33,14 @@ const CoordinatorList = () => {
          setSearchResults(results);
      }
 
-
-     useEffect(() => {
-         //fetch coodeinators
-     }, [])
-
      
-    if(loading) return <Loading/>
 
+    useEffect(() => {
+        dispatch(fetchCoordinators());
+    }, []);
+
+
+    if(loading) return <Loading/>
     const finalData = searchResults.length ? searchResults : coordinators;
     return (
         <Box>

@@ -1,4 +1,4 @@
-import { COORDINATORS_FETCHED } from "../../config/reduxContants"
+import {COORDINATORS_FETCHED} from "../../config/reduxContants";
 
 const coordinatorList = [
     {_id: "1", name: "Coordinator One", status: "Status"},
@@ -10,8 +10,7 @@ const coordinatorList = [
     {_id: "7", name: "Coordinator Seven", status: "Status"},
 ]
 
-
-export const fetchCoodinators = () =>  async dispatch => {
-    console.log("Hello World...");
-    dispatch({type: COORDINATORS_FETCHED, payload: coordinatorList})
+export const fetchCoordinators = () => async dispatch => {
+    // dispatch({type: 'GET_COORDINATORS'});
+    dispatch({type: COORDINATORS_FETCHED, payload: [...coordinatorList]});
 }

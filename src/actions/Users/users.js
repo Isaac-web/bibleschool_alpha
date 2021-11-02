@@ -1,4 +1,5 @@
-import {LOADING_STARTED, LOADING_STOPPED, USERS_FETCHED} from "../../config/reduxContants";
+import {LOADING_STARTED, LOADING_STOPPED, USERS_FETCHED, USERS_SEARCHED} from "../../config/reduxContants";
+import formatSearchText from "../../utils/formatSearchText";
 
 const data = [
     {_id: "1", name: "Coordinator One", status: "Admin"},
@@ -16,4 +17,15 @@ export const getUsers = () => async dispatch => {
     dispatch({type: USERS_FETCHED, payload: [...data]});
     dispatch({type: LOADING_STOPPED});
 }
+
+
+export const searchUsers = (username) => async dispatch => {
+    dispatch({type: LOADING_STARTED});
+    const result = data.filter(item => formatSearchText(item.name).includes(formatSearchText(username)));
+    dispatch({type: USERS_SEARCHED, payload: result});
+    dispatch({type: LOADING_STOPPED});
+}
+
+
+
 

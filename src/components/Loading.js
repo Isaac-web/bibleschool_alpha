@@ -13,9 +13,6 @@ const Loading = ({text}) => {
                     size={"5em"} 
                     thickness={4} 
                     variant="determinate"
-                    sx={{
-                        color: "#2781fe67"
-                    }}
                     value={100} 
                     classes={{circle: classes.circleBackground}}
                     style={{top: 0, left: 0, position: "absolute"}}
