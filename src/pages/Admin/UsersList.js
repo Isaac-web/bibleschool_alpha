@@ -1,17 +1,21 @@
 import React, {useEffect} from 'react'
-import {Avatar, Button, List, ListItem, ListItemText, ListItemAvatar, ListItemSecondaryAction, useTheme} from "@mui/material";
+import {Avatar, Button, List, ListItem, ListItemText, ListItemAvatar, ListItemSecondaryAction, useTheme, Snackbar} from "@mui/material";
 import {useSelector, useDispatch} from "react-redux";
+
 
 
 import {getUsers} from "../../actions/Users/users";
 import Loading from '../../components/Loading';
+import {addCoordinator} from "../../actions/Admin/coordinators";
 
 
 
-const UsersList = () => {
+const UsersList = ({onSelect}) => {
     const theme = useTheme();
     const dispatch = useDispatch();
     const {data, loading} = useSelector(state => state.users);
+
+
 
     useEffect(() => {
         dispatch(getUsers());
@@ -19,9 +23,9 @@ const UsersList = () => {
 
 
     if(loading) return <Loading/>
-
     return (
-        <List>
+        <>  
+            <List>
             {
                 data.map(item =>{  
                     const isAdded = item.status.toLowerCase() === "admin" || item.status.toLowerCase() === "coordinator";
@@ -39,6 +43,7 @@ const UsersList = () => {
                                     }} 
                                 disabled={isAdded} 
                                 size="small"
+                                onClick={() => onSelect(item)}
                             >
                                     {isAdded ? "Added" : "Add"}
                             </Button>
@@ -47,6 +52,7 @@ const UsersList = () => {
                 })
             }
         </List>
+        </>
     )
 }
 

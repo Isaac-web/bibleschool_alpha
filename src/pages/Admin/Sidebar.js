@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {Paper, Avatar, Grid, Typography, InputBase, InputAdornment} from "@mui/material";
+import {Button, Paper, Avatar, Grid, Typography, InputBase, InputAdornment, Dialog, 
+        DialogTitle, DialogContent, DialogActions} from "@mui/material";
 import {makeStyles} from '@mui/styles';
 import {Settings, Search} from "@mui/icons-material";
 import { useDispatch } from 'react-redux';
@@ -7,10 +8,9 @@ import { useDispatch } from 'react-redux';
 
 import GridButton from "./GridButton";
 import AppButton from "../../components/AppButton";
-import MiniDialog from '../../components/Dialog/MiniDialog';
-import UsersList from "./UsersList";
 import {searchUsers} from "../../actions/Users/users";
-
+import CreateCourseDialog from "./CreateCourseDialog";
+import UsersDialog from './UsersDialog';
 
 
 
@@ -18,6 +18,8 @@ const Sidebar = () => {
     const dispatch = useDispatch();
     const classes = useStyles();
     const [openUserDialog, setOpenUsersDialog] = useState(false);
+    const [openCourseDialog, setOpenCourseDialog] = useState(false);
+
 
 
     const closeUsersDialog = () => {
@@ -28,9 +30,17 @@ const Sidebar = () => {
         setOpenUsersDialog(true);
     }
 
+    const handleOpenCourseDialog = () => {
+        setOpenCourseDialog(true);
+    }
 
-    const handleUsersSearch = ({target:input}) => {
-        dispatch(searchUsers(input.value));
+    const handleCloseCourseDialog = () => {
+        setOpenCourseDialog(false);
+    }
+
+
+    const handleUserSelect = (item) => {
+        console.log(item)
     }
 
 
@@ -49,8 +59,7 @@ const Sidebar = () => {
 
                 <Grid container justifyContent="center">
                     <GridButton Icon={<Settings/>} onClick={openUsersDialog} tooltip="Add Coordinator"/>
-                    <GridButton Icon={<Settings/>} onClick={() => console.log("Button Clicked...")}/>
-                    <GridButton Icon={<Settings/>} onClick={() => console.log("Button Clicked...")}/>
+                    <GridButton Icon={<Settings/>} onClick={handleOpenCourseDialog} tooltip="Add Course"/>
                 </Grid>
 
                 <Grid item className={classes.profileButtonContainer}>
@@ -58,28 +67,17 @@ const Sidebar = () => {
                 </Grid>
             </Grid>
 
-
-            {/* DIALOG */}
-            <MiniDialog
-                open={openUserDialog}
-                Header={
-                    <InputBase 
-                        autoFocus
-                        fullWidth
-                        onChange={handleUsersSearch}
-                        startAdornment={<InputAdornment 
-                                        style={{marginRight: 10}}
-                                        >
-                                            <Search size={30} color="primary"/>
-                                        </InputAdornment>}
-                        placeholder="Search Coordinators..."
-                        style={{fontSize: 20}}
-                    />
-                }
+            <UsersDialog 
+                open={openUserDialog} 
                 onClose={closeUsersDialog}
-            >
-                <UsersList/>
-            </MiniDialog>
+            />
+
+            
+            <CreateCourseDialog 
+                open={openCourseDialog} 
+                onClose={handleCloseCourseDialog}
+                title="New Course"
+            />
         </Paper>
     )
 }

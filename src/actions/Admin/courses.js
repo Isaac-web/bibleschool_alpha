@@ -24,6 +24,14 @@ const fetchCourses = () => async dispatch => {
 
 
 
+const addCourse = (courseData, notify) => async dispatch => {
+    dispatch({type: "COURSE_ADDED", payload: courseData});
+    notify(true);
+}
+
+
+
 export default {
-    fetchCourses
+    fetchCourses,
+    addCourse,
 }
