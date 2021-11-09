@@ -7,8 +7,9 @@ import {makeStyles} from "@mui/styles";
 
 
 import SearchInput from '../../components/SearchInput';
-import {fetchAdmins} from "../../actions/Admin/admins";
+import {fetchAdmins, removeAdmin} from "../../actions/Admin/admins";
 import Loading from '../../components/Loading';
+import AppSnackbar from '../../components/AppSnackbar';
 
 
 const AdminList = ({data}) => {
@@ -16,15 +17,21 @@ const AdminList = ({data}) => {
     const classes = useStyles();
     const {data: admins, loading} = useSelector(state => state.admins);
     const [searchResults, setSearchResults] = useState([]);
-
-    const handleRemove = (id) => {
-        console.log(id);
-    }
-
+    const [snackbar, setSnackbar] = useState({open: false, message: "", color: ""})
 
 
     const formatText = (text) => {
         return text.trim().toLowerCase();
+    }
+
+
+    const notify = (message, color) => {
+        setSnackbar({...snackbar, open: true, message, color});
+    }
+
+
+    const handleRemove = (id) => {
+        dispatch(removeAdmin(id, notify));
     }
 
      const handleSearch = (item) => {
@@ -68,6 +75,13 @@ const AdminList = ({data}) => {
                         </ListItem>
                 )}
             </List>
+
+            <AppSnackbar 
+                open={snackbar.open} 
+                onClose={() => setSnackbar({...snackbar, open: false})} 
+                message={snackbar.message}
+                color={snackbar.color}
+            />
         </>
     )
 }

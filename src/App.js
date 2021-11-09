@@ -4,15 +4,15 @@ import React from 'react';
 
 
 import Admin from "./pages/Admin";
+import Coordinator from "./pages/Coordiantor"
 import Header from "./components/Header/Header";
-import Loading from "./components/Loading"
 
 const App = () => {
     return (
         <div>
             <Header/>
             <div style={{marginTop: 80}}>
-                <Admin/>
+                <Coordinator/>
             </div>
         </div>
     )

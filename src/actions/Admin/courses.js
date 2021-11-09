@@ -1,4 +1,5 @@
 import {ADMIN_COURSES_FETCHED, LOADING_STARTED, LOADING_STOPPED} from "../../config/reduxContants";
+import {colors} from "../../config"
 
 
 
@@ -25,8 +26,25 @@ const fetchCourses = () => async dispatch => {
 
 
 const addCourse = (courseData, notify) => async dispatch => {
-    dispatch({type: "COURSE_ADDED", payload: courseData});
-    notify(true);
+    try{
+        notify("Course Added Successfully", colors.success);
+        dispatch({type: "COURSE_ADDED", payload: courseData});
+    }catch(err) {
+        notify("Opps! Could not add course.", "red");
+    }   
+    
+}
+
+
+const removeCourse = (courseId, notify) => async dispatch => {
+    try{
+        console.log("Deleting on the server...");
+        dispatch({type: "COURSE_DELETED", payload: courseId});
+        notify("Course Deleted.", colors.success)
+    }catch(err) {
+        notify("Opps! Could not delete course.", "red");
+    }   
+    
 }
 
 
@@ -34,4 +52,5 @@ const addCourse = (courseData, notify) => async dispatch => {
 export default {
     fetchCourses,
     addCourse,
+    removeCourse
 }

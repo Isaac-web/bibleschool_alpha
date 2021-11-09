@@ -1,14 +1,13 @@
 import React, {useState} from 'react';
-import {Button, Paper, Avatar, Grid, Typography, InputBase, InputAdornment, Dialog, 
-        DialogTitle, DialogContent, DialogActions} from "@mui/material";
+import {Button, Paper, Avatar, Grid, Typography} from "@mui/material";
 import {makeStyles} from '@mui/styles';
-import {Settings, Search} from "@mui/icons-material";
+import {Settings} from "@mui/icons-material";
 import { useDispatch } from 'react-redux';
+import AddAdminDialog from "./AddAdminDialog";
 
 
 import GridButton from "./GridButton";
 import AppButton from "../../components/AppButton";
-import {searchUsers} from "../../actions/Users/users";
 import CreateCourseDialog from "./CreateCourseDialog";
 import UsersDialog from './UsersDialog';
 
@@ -19,6 +18,7 @@ const Sidebar = () => {
     const classes = useStyles();
     const [openUserDialog, setOpenUsersDialog] = useState(false);
     const [openCourseDialog, setOpenCourseDialog] = useState(false);
+    const [openAdminDialog, setOpenAdminDialog] = useState(false);
 
 
 
@@ -26,8 +26,8 @@ const Sidebar = () => {
         setOpenUsersDialog(false);
     }
 
-    const openUsersDialog = () => {
-        setOpenUsersDialog(true);
+    const handleOpenAdminDialog = () => {
+        setOpenAdminDialog(true);
     }
 
     const handleOpenCourseDialog = () => {
@@ -37,12 +37,6 @@ const Sidebar = () => {
     const handleCloseCourseDialog = () => {
         setOpenCourseDialog(false);
     }
-
-
-    const handleUserSelect = (item) => {
-        console.log(item)
-    }
-
 
 
     return (
@@ -58,7 +52,7 @@ const Sidebar = () => {
                 </Grid>
 
                 <Grid container justifyContent="center">
-                    <GridButton Icon={<Settings/>} onClick={openUsersDialog} tooltip="Add Coordinator"/>
+                    <GridButton Icon={<Settings/>} onClick={handleOpenAdminDialog} tooltip="Add Admin"/>
                     <GridButton Icon={<Settings/>} onClick={handleOpenCourseDialog} tooltip="Add Course"/>
                 </Grid>
 
@@ -77,6 +71,11 @@ const Sidebar = () => {
                 open={openCourseDialog} 
                 onClose={handleCloseCourseDialog}
                 title="New Course"
+            />
+
+            <AddAdminDialog 
+                open={openAdminDialog}
+                onClose={() => setOpenAdminDialog(false)}
             />
         </Paper>
     )

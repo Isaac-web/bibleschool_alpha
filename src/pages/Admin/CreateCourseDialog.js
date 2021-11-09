@@ -22,9 +22,9 @@ const CreateCourseDialog = ({open, onClose, title}) => {
     const initialCourseData = {title: "", coordinator: {_id: "", name: ""}}
     const classes = useStyles();
     const dispatch = useDispatch();
-    const [openSnack, setOpenSnack] = useState(false);
     const [openUsersDialog, setOpenUsersDialog] = useState(false);
     const [courseData, setCourseData] = useState(initialCourseData);
+    const [snackbar, setSnackbar] = useState({open: false, message: "", color: ""});
     
  
     const handleOpenuserDialog = () => {
@@ -49,6 +49,11 @@ const CreateCourseDialog = ({open, onClose, title}) => {
          newState.coordinator = coordinator;
          setCourseData(newState);
     }
+
+
+    const nofity = (message, color) => {
+        setSnackbar({...snackbar, open: true, message, color});
+    }
  
  
     const handleSubmit = (e) => {
@@ -57,7 +62,7 @@ const CreateCourseDialog = ({open, onClose, title}) => {
          if(!courseData.title.trim().length || courseData.title.trim().lenth < 3) return;
          if(!courseData.coordinator._id) return;
          
-         dispatch(courseActions.addCourse(courseData, setOpenSnack));
+         dispatch(courseActions.addCourse(courseData, nofity));
          clear();
     }
 
@@ -71,10 +76,11 @@ const CreateCourseDialog = ({open, onClose, title}) => {
      return (
          <>
             <Snackbar
-                message="Hello World"
-                open={openSnack}
-                onClose={() => setOpenSnack(false)}
-                timeout={300}
+                message={snackbar.message}
+                open={snackbar.open}
+                onClose={() => setSnackbar({...snackbar, open: false})}
+                autoHideDuration={3000}
+                ContentProps={{style: {backgroundColor: snackbar.color}}}
             />
             <UsersDialog
                 open={openUsersDialog}

@@ -13,11 +13,12 @@ const courses = (state = {loading: false, data: []}, action) => {
             return({...state, loading: false});
         
         case "COURSE_ADDED":
-            // const courseObject = {_id: "new1", title: action.payload.title, enrollments: 0, coordinator: action.paylod.coordinator.name};
             let {title, coordinator:{name}} = action.payload;
             const courseObject = {_id: Date.now().toString(), title, enrollments: 0, coordinator: name};
-            
             return {...state, data: [courseObject, ...state.data]};
+        case 'COURSE_DELETED':
+            let filtedList = [...state.data].filter(course => course._id !== action.payload);
+            return {...state, data: filtedList};
 
         default:
             return state;
