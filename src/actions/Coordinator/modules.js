@@ -1,4 +1,5 @@
-import {colors} from "../../config"
+import {colors} from "../../config";
+import {clearCurrentModule, setCurrentModule} from "../Coordinator/currentModule";
 
 const data = [
     {_id: "1", title: "Title1", subtitle: "subtitle1"},
@@ -24,6 +25,23 @@ export const addModule = (module, notify) => async dispatch => {
     
     notify("Adding Module...");
     console.log("Calling server...");
-    dispatch({type: "MODULE_ADDED", payload: {...module, _id: Date.now().toString(), module}});
+    const data = {...module, _id: Date.now().toString(), module};
+    
+    dispatch({type: "MODULE_ADDED", payload: data});
+    dispatch(setCurrentModule(data));
     notify("New Module Added", colors.success);
+}
+
+
+export const deleteModule = (module, notify, prevState, isCurrentModule) => async dispatch  => {
+    try {
+        console.log("Deleting module from the server...");
+        dispatch({type: "MODULE_DELETED", payload: module});
+        if(isCurrentModule) dispatch(clearCurrentModule());
+        
+    }
+    catch(err) {
+        notify("Opps!! Module could not be deleted.", colors.danger);
+        dispatch({type: "MODULES_REVOKED", payload: prevState});
+    }
 }

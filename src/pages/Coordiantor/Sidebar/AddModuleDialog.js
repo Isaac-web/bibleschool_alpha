@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField} from "@mui/material";
+import {useTheme} from "@mui/styles";
 import {useDispatch} from "react-redux";
 
 import {Save, Cancel} from "@mui/icons-material";
@@ -13,7 +14,7 @@ const AddModuleDialog = ({open, onClose, title}) => {
     const initialFormData = {title: "", subtitle: ""}
     const [data, setData] = useState(initialFormData);
     const [snackbar, setSnackbar] = useState({open:false, message:"", color:""});
-
+    
 
 
     const handleChange = ({target:input}) => setData({...data, [input.name]: input.value});

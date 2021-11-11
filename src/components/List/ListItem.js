@@ -1,11 +1,11 @@
 import React from 'react'
-import {Avatar, Button, ListItem as MuiListItem, ListItemAvatar, ListItemText, ListItemSecondaryAction} from "@mui/material";
+import {Avatar, ListItem as MuiListItem, ListItemAvatar, ListItemText, ListItemSecondaryAction} from "@mui/material";
 
-const ListItem = ({image, title, subtitle, actions}) => {
+const ListItem = ({image, title, subtitle, actions, onClick, Icon}) => {
     return (
-        <MuiListItem>
+        <MuiListItem onClick={onClick}>
             {image && <ListItemAvatar>
-                <Avatar/>
+                {!Icon ? <Avatar/>: Icon}
             </ListItemAvatar>}
 
             <ListItemText primary={title} secondary={subtitle}/>

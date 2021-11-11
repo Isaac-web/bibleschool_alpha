@@ -7,6 +7,7 @@ import adminEnrollments from "./Admin/enrollments";
 import users from "./Users/users";
 import coordinators from './Admin/coordinators';
 import coordinatorModules from "./Coordinator/modules";
+import currentModule from './Coordinator/currentModule';
 
 
 
@@ -16,5 +17,6 @@ export default combineReducers({
     adminEnrollments, 
     coordinators,
     users, 
-    coordinatorModules
+    coordinatorModules,
+    currentModule
 })
