@@ -1,22 +1,26 @@
 import React from 'react';
-import {Box, Container} from "@mui/material"
-
-
-import Sidebar from './Sidebar'
-import Main from './Main'
+import {Container, Grid, Typography} from "@mui/material";
+import {Link} from "react-router-dom"
 
 
 
-const Index = () => {
+import CoordinatorPanelCard from "./CoordinatorPannelCard";
+
+
+const index = () => {
     return (
-        <Container maxWidth="xl" style={{display: "flex"}}>
-            <Main/>
-            <Sidebar/>
-        </Container>
+       <Container maxWith="xl">
+           <Grid container alignItems="center">
+               <Grid item>
+                   <Typography variant="h4">Welcome Back | Coordinator Name |</Typography>
+               </Grid>
+               <Grid item container>
+                   <CoordinatorPanelCard title="Course" subtitle="Universe conflict" to="/coordinator/course"/>
+                   <CoordinatorPanelCard title="Enrollments" subtitle="43" to="/coordinator/enrollments"/>
+               </Grid>
+           </Grid>
+       </Container>
     )
 }
 
-
-
-
-export default Index
+export default index
