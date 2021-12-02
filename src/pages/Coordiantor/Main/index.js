@@ -10,6 +10,7 @@ import QuestionBoxList from './QuestionBoxList';
 import {addQuestion, saveChanges, supplyFile} from "../../../actions/Coordinator/currentModule";
 import AppSnackbar from "../../../components/AppSnackbar";
 import FileListItem from "../../../components/List/FileListItem";
+import Empty from "../../../components/Empty";
 
 
 
@@ -81,7 +82,7 @@ const Index = () => {
         />
         <Box className={classes.main} style={{flex: matchesSM && 1}}>
         { !currentModule?._id ? 
-            <Box><h1>No Module Selected</h1></Box> :
+            <Empty title="No Module Selected"/> :
             
             <Box style={{overflow: "auto", height: "100%"}}>
                 <Box>
@@ -129,7 +130,7 @@ const useStyles = makeStyles(theme => ({
         marginTop: "1em"
     },
     main: {
-        flex: 0.75,
+        flex: 0.70,
         overflow: "hidden", 
         height: "88vh"
     }, 

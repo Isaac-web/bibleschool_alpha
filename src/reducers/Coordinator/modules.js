@@ -1,4 +1,4 @@
-
+import {LOADING_STARTED, LOADING_STOPPED} from "../../config/reduxContants";
 
 const modules = (state = {loading: false, data: []}, action) => {
     switch(action.type) {
@@ -12,6 +12,11 @@ const modules = (state = {loading: false, data: []}, action) => {
             return {...state, data: remaining}
         case 'MODULES_REVOKED':
             return {...state, data: action.payload}
+    
+        case LOADING_STARTED:
+            return {...state, loading: true}
+        case LOADING_STOPPED:
+            return {...state, loading: false}
         default: 
             return state;
     }

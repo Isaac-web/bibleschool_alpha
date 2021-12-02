@@ -44,7 +44,8 @@ const useStyles = makeStyles(theme => ({
         height: "60vh",
         flexDirection: "column", 
         backgroundColor: "rgba(0, 0, 0, 0.01)", 
-        borderRadius: 15
+        borderRadius: 15, 
+        width: "100%"
         
     }, 
     circle: {

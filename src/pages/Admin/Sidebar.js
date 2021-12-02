@@ -4,82 +4,105 @@ import {makeStyles} from '@mui/styles';
 import {Settings} from "@mui/icons-material";
 import { useDispatch } from 'react-redux';
 import AddAdminDialog from "./AddAdminDialog";
-
+import * as authService from "../../services/userServices";
 
 import GridButton from "./GridButton";
 import AppButton from "../../components/AppButton";
 import CreateCourseDialog from "./CreateCourseDialog";
-import UsersDialog from './UsersDialog';
-
-
+import UsersDialog from "./UsersDialog";
 
 const Sidebar = () => {
-    const dispatch = useDispatch();
-    const classes = useStyles();
-    const [openUserDialog, setOpenUsersDialog] = useState(false);
-    const [openCourseDialog, setOpenCourseDialog] = useState(false);
-    const [openAdminDialog, setOpenAdminDialog] = useState(false);
+  const dispatch = useDispatch();
+  const classes = useStyles();
+  const [openUserDialog, setOpenUsersDialog] = useState(false);
+  const [openCourseDialog, setOpenCourseDialog] = useState(false);
+  const [openAdminDialog, setOpenAdminDialog] = useState(false);
 
+  const closeUsersDialog = () => {
+    setOpenUsersDialog(false);
+  };
 
+  const handleOpenAdminDialog = () => {
+    setOpenAdminDialog(true);
+  };
 
-    const closeUsersDialog = () => {
-        setOpenUsersDialog(false);
-    }
+  const handleOpenCourseDialog = () => {
+    setOpenCourseDialog(true);
+  };
 
-    const handleOpenAdminDialog = () => {
-        setOpenAdminDialog(true);
-    }
+  const handleCloseCourseDialog = () => {
+    setOpenCourseDialog(false);
+  };
 
-    const handleOpenCourseDialog = () => {
-        setOpenCourseDialog(true);
-    }
+  const user = authService.getCurrentUser();
+  return (
+    <Paper className={classes.sidebarPaper}>
+      {/* SIDEBAR */}
+      <Grid
+        container
+        direction="column"
+        alignItems="center"
+        justifyContent="space-around"
+        className={classes.container}
+      >
+        <Grid item>
+          <Avatar
+            style={{
+              height: "5em",
+              width: "5em",
+              backgroundColor: "rgba(0, 0, 0, 0.1)",
+              marginBottom: 20,
+            }}
+          />
+        </Grid>
+        <Grid item className={classes.textContainer}>
+          <Typography variant="h5" align="center">
+            {user.name}
+          </Typography>
+          <Typography
+            variant="body2"
+            align="center"
+            className={classes.subTitle}
+          >
+            {user.status?.toUpperCase()}
+          </Typography>
+        </Grid>
 
-    const handleCloseCourseDialog = () => {
-        setOpenCourseDialog(false);
-    }
+        <Grid container justifyContent="center">
+          <GridButton
+            Icon={<Settings />}
+            onClick={handleOpenCourseDialog}
+            tooltip="Add Course"
+          />
+          <GridButton
+            Icon={<Settings />}
+            onClick={handleOpenAdminDialog}
+            tooltip="Add Admin"
+          />
+        </Grid>
 
+        <Grid item className={classes.profileButtonContainer}>
+          <AppButton style={{ padding: "10px 2em" }} rounded>
+            View Profile
+          </AppButton>
+        </Grid>
+      </Grid>
 
-    return (
-        <Paper className={classes.sidebarPaper}>
-            {/* SIDEBAR */}
-            <Grid container direction="column" alignItems="center" justifyContent="space-around" className={classes.container}>
-                <Grid item>
-                    <Avatar style={{height: "5em", width: "5em", backgroundColor: "rgba(0, 0, 0, 0.1)", marginBottom: 20}}/>
-                </Grid>
-                <Grid item className={classes.textContainer}>
-                    <Typography variant="h5" align="center">Admin Name</Typography>
-                    <Typography variant="body2" align="center" className={classes.subTitle}>Admin</Typography>
-                </Grid>
+      <UsersDialog open={openUserDialog} onClose={closeUsersDialog} />
 
-                <Grid container justifyContent="center">
-                    <GridButton Icon={<Settings/>} onClick={handleOpenAdminDialog} tooltip="Add Admin"/>
-                    <GridButton Icon={<Settings/>} onClick={handleOpenCourseDialog} tooltip="Add Course"/>
-                </Grid>
+      <CreateCourseDialog
+        open={openCourseDialog}
+        onClose={handleCloseCourseDialog}
+        title="New Course"
+      />
 
-                <Grid item className={classes.profileButtonContainer}>
-                    <AppButton style={{padding: "10px 2em"}} rounded>View Profile</AppButton>
-                </Grid>
-            </Grid>
-
-            <UsersDialog 
-                open={openUserDialog} 
-                onClose={closeUsersDialog}
-            />
-
-            
-            <CreateCourseDialog 
-                open={openCourseDialog} 
-                onClose={handleCloseCourseDialog}
-                title="New Course"
-            />
-
-            <AddAdminDialog 
-                open={openAdminDialog}
-                onClose={() => setOpenAdminDialog(false)}
-            />
-        </Paper>
-    )
-}
+      <AddAdminDialog
+        open={openAdminDialog}
+        onClose={() => setOpenAdminDialog(false)}
+      />
+    </Paper>
+  );
+};
 
 
 

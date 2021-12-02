@@ -5,7 +5,9 @@ import {makeStyles} from "@mui/styles";
 
 import ListItem from "./ListItem"
 
-const Index = ({data, onItemSelect, actionIcon, onSecondaryAction}) => {
+const Index = ({data, onItemSelect, currentItem, actionIcon, onSecondaryAction}) => {
+
+
     const classes = useStyles();
 
     const raiseItemSelect = (item) => {
@@ -20,12 +22,13 @@ const Index = ({data, onItemSelect, actionIcon, onSecondaryAction}) => {
 
     return (
         <List className={classes.list}>
-            {data.map(item => 
+            {data?.map(item => 
                     <ListItem 
                         key={item._id} 
                         title={item.title} 
                         subtitle={item.subtitle}
                         onClick={() => raiseItemSelect(item)}
+                        currentItem={item._id === currentItem}
                         actions={<IconButton 
                                     className={classes.iconButton} 
                                     onClick={() => raiseSecondaryAction(item)}

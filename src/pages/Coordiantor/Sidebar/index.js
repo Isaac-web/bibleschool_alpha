@@ -8,12 +8,15 @@ import {useSelector, useDispatch} from "react-redux";
 
 import AddModuleDialog from './AddModuleDialog';
 import AppSnackbar from '../../../components/AppSnackbar';
+import Loading from '../../../components/Loading';
 import AppDrawer from '../../../components/AppDrawer';
 import SearchInput from '../../../components/SearchInput';
 import formatSearchText from "../../../utils/formatSearchText"
 import List from '../../../components/List'
 import {fetchModules, deleteModule} from "../../../actions/Coordinator/modules";
 import {setCurrentModule} from "../../../actions/Coordinator/currentModule";
+import Empty from "../../../components/Empty";
+import emtpyboxImage from "../../../static/empty-box.png";
 
 
 const Index = () => {
@@ -24,9 +27,11 @@ const Index = () => {
     const [drawerOpen, setdrawerOpen] = useState(false);
     const [searchResults, setSearchResults] = useState([]);
     const [snackbar, setSnackbar] = useState({open: false, message: "", color: ""});
-    const {data: modules} = useSelector(state => state.coordinatorModules);
     const {data: currentModule} = useSelector(state => state.currentModule);
     const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
+    const [currentItem, setCurrentItem] = useState(undefined);
+    const {data: modules, loading} = useSelector(state => state.coordinatorModules);
+    const {_id: currentModuleId} = useSelector(state => state.currentModule.data);
 
 
 
@@ -58,6 +63,7 @@ const Index = () => {
 
     const handleItemSelect = (item) => {
         dispatch(setCurrentModule(item));
+        setCurrentItem(item._id);
     }
 
 
@@ -81,8 +87,18 @@ const Index = () => {
     }
 
 
+    if(loading) return <Loading/>
+
     
     const finalData = searchResults.length ? searchResults : modules;
+
+    const finalList =  <List 
+                            currentItem={currentModuleId}
+                            onItemSelect={(item) => handleItemSelect(item)}
+                            onSecondaryAction={handleDelete}
+                            data={finalData} 
+                            actionIcon={<Delete style={{fontSize: 18}}/>}
+                       />
     return (
         <>
             {matchesSM && <IconButton 
@@ -101,12 +117,7 @@ const Index = () => {
                         <SearchInput placeholder="Search..." onChange={handleSearch}/>
                     </Box>
                     <Box className={classes.content}>
-                        <List 
-                            onItemSelect={(item) => handleItemSelect(item)}
-                            onSecondaryAction={handleDelete}
-                            data={finalData} 
-                            actionIcon={<Delete style={{fontSize: 18}}/>}
-                        />     
+                        {finalList} 
                     </Box>
                 </Paper>
             </Box>:
@@ -123,15 +134,9 @@ const Index = () => {
                                 <SearchInput placeholder="Search..." onChange={handleSearch}/>
                             </Box>
                             <Box className={classes.content}>
-                                <List 
-                                    onItemSelect={(item) => handleItemSelect(item)}
-                                    onSecondaryAction={handleDelete}
-                                    data={finalData} 
-                                    actionIcon={<Delete style={{fontSize: 18}}/>}
-                                />     
+                               {finalList}
                             </Box>
                         </Paper>
-
                             {matchesSM && drawerOpen && <Fab
                             className={classes.fab} 
                             onClick={handleOpenNewModuleDialog}
@@ -197,7 +202,7 @@ const useStyles = makeStyles(theme => ({
         position: "relative"
     },
     sidebar: {
-        flex: 0.25, 
+        flex: 0.3, 
         height: "88vh",
         padding: "0 0.5em", 
         boxSizing: "border-box",

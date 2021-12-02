@@ -1,11 +1,14 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {InputBase, Container, Typography, Paper, InputAdornment, IconButton} from "@mui/material";
 import {Search, MoreVert} from "@mui/icons-material";
+import {useSelector, useDispatch} from "react-redux";
 
 
 import EnrollmentsTable from "./EnrollmentTable";
 import formatSearchText from "../../../utils/formatSearchText";
 import AppMenu from "../../../components/AppMenu";
+import Loading from "../../../components/Loading";
+import {fetchEnrollments} from "../../../actions/Coordinator/enrollment";
 
 
 
@@ -40,10 +43,15 @@ const columns = [
 
 
 const Index = () => {
+    const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [searchResults, setSearchResults] = useState([]);
     const [filterProperty, setFilterProperty] = useState("");
+
+
+    const { data: enrollments, loading } = useSelector(state => state.coordinatorEnrollments);
+    
 
 
 
@@ -73,9 +81,16 @@ const Index = () => {
 
 
 
-    let filtered = [...enrollmentsData].filter(item => formatSearchText(item.status) === formatSearchText(filterProperty));
+    let filtered = enrollments.filter(item => formatSearchText(item.status) === formatSearchText(filterProperty));
     filtered = filtered.length ? filtered : enrollmentsData
 
+
+    useEffect(() => {
+        dispatch(fetchEnrollments());
+    }, [])
+
+
+    if(loading) return <Loading/>
 
 
     return (

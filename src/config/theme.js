@@ -19,6 +19,20 @@ export default createTheme({
             main: colors.secondary
         }
     }, 
+    typography: {
+        fontFamily: [
+          'Roboto',
+          'Arial',
+          '"Helvetica Neue"',
+          '"Segoe UI"',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'sans-serif',
+          '"Apple Color Emoji"',
+          '"Segoe UI Emoji"',
+          '"Segoe UI Symbol"',
+        ].join(','),
+      },
     overrides: {
         MuiTableHead: {
             root: {

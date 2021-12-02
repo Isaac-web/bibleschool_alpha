@@ -1,51 +1,39 @@
 import {ADMIN_COURSES_FETCHED, LOADING_STARTED, LOADING_STOPPED} from "../../config/reduxContants";
 import {colors} from "../../config"
+import * as api from "../../api/index";
 
+const fetchCourses = () => async (dispatch) => {
+  dispatch({ type: LOADING_STARTED });
+  const { data } = await api.getAdminCourses();
+  dispatch({ type: ADMIN_COURSES_FETCHED, payload: data });
+  dispatch({ type: LOADING_STOPPED });
+};
 
+const addCourse = (courseData, notify) => async (dispatch) => {
+  const apiData = {
+    coordinator: courseData.coordinator._id,
+    title: courseData.title,
+  };
 
-const data = [
-    {_id: "1", title: "New Course 1", enrollments: 10, coordinator: "Appiah Agyei 1"},
-    {_id: "2", title: "New Course 2", enrollments: 10, coordinator: "Appiah Agyei 2"},
-    {_id: "3", title: "New Course 3", enrollments: 10, coordinator: "Appiah Agyei 3"},
-    {_id: "4", title: "New Course 4", enrollments: 10, coordinator: "Appiah Agyei 4"},
-    {_id: "5", title: "New Course 5", enrollments: 10, coordinator: "Appiah Agyei 5"},
-    {_id: "6", title: "New Course 5", enrollments: 10, coordinator: "Appiah Agyei 5"},
-    {_id: "7", title: "New Course 6", enrollments: 10, coordinator: "Appiah Agyei 5"},
-    {_id: "8", title: "New Course 7", enrollments: 10, coordinator: "Appiah Agyei 5"},
-    {_id: "9", title: "New Course 8", enrollments: 10, coordinator: "Appiah Agyei 5"},
-]
+  try {
+    const { data } = await api.addCourse(apiData);
 
+    notify("Course Added Successfully", colors.success);
+    dispatch({ type: "COURSE_ADDED", payload: data });
+  } catch (err) {
+    notify("Opps! Could not add course.", "red");
+  }
+};
 
-
-const fetchCourses = () => async dispatch => {
-    dispatch({type: LOADING_STARTED});
-    dispatch({type: ADMIN_COURSES_FETCHED, payload: [...data]});
-    dispatch({type: LOADING_STOPPED});
-}
-
-
-
-const addCourse = (courseData, notify) => async dispatch => {
-    try{
-        notify("Course Added Successfully", colors.success);
-        dispatch({type: "COURSE_ADDED", payload: courseData});
-    }catch(err) {
-        notify("Opps! Could not add course.", "red");
-    }   
-    
-}
-
-
-const removeCourse = (courseId, notify) => async dispatch => {
-    try{
-        console.log("Deleting on the server...");
-        dispatch({type: "COURSE_DELETED", payload: courseId});
-        notify("Course Deleted.", colors.success)
-    }catch(err) {
-        notify("Opps! Could not delete course.", "red");
-    }   
-    
-}
+const removeCourse = (courseId, notify) => async (dispatch) => {
+  try {
+    await api.deleteCourse(courseId);
+    dispatch({ type: "COURSE_DELETED", payload: courseId });
+    notify("Course Deleted.", colors.success);
+  } catch (err) {
+    notify("Opps! Could not delete course.", "red");
+  }
+};
 
 
 

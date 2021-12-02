@@ -30,25 +30,32 @@ const UsersList = ({onSelect}) => {
                 data.map(item =>{  
                     const isAdded = item.status.toLowerCase() === "admin" || item.status.toLowerCase() === "coordinator";
                     
-                    return <ListItem key={item._id}>
+                    return (
+                      <ListItem key={item._id}>
                         <ListItemAvatar>
-                            <Avatar src={item.image}/>
+                          <Avatar src={item.image} />
                         </ListItemAvatar>
-                        <ListItemText primary={item.name} secondary={item.status}/>
+                        <ListItemText
+                          primary={`${item.firstname} ${item.lastname}`}
+                          secondary={item.status}
+                        />
                         <ListItemSecondaryAction>
-                            <Button 
-                                style={{
-                                    textTransform: "none", 
-                                    color: isAdded ? "gold": theme.palette.common.success
-                                    }} 
-                                disabled={isAdded} 
-                                size="small"
-                                onClick={() => onSelect(item)}
-                            >
-                                    {isAdded ? "Added" : "Add"}
-                            </Button>
+                          <Button
+                            style={{
+                              textTransform: "none",
+                              color: isAdded
+                                ? "gold"
+                                : theme.palette.common.success,
+                            }}
+                            disabled={isAdded}
+                            size="small"
+                            onClick={() => onSelect(item)}
+                          >
+                            {isAdded ? "Added" : "Add"}
+                          </Button>
                         </ListItemSecondaryAction>
-                    </ListItem>
+                      </ListItem>
+                    );
                 })
             }
         </List>
