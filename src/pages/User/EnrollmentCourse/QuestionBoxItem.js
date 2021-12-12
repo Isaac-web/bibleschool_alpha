@@ -3,36 +3,49 @@ import {Box, FormControlLabel, Typography, Radio, RadioGroup, IconButton} from "
 import {makeStyles} from "@mui/styles";
 import {useSelector, useDispatch} from "react-redux";
 
-const QuestionBoxItem = ({questionObject=null, onDelete}) => {
-    const classes = useStyles();
-    const questions = useSelector(state => state.currentModule.data.questions);
+import { updateQuestion } from "../../../actions/Users/currentEnrollment";
 
-    const handleRadioChange = (ans, questionObject) => {
-       const clonedQuestions = [...questions];
-       const index = questions.findIndex(q => q.question === questionObject.question);
-       if(index === -1) return;
+const QuestionBoxItem = ({ questionObject = null, onDelete }) => {
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const questions = useSelector((state) => state.currentModule.data.questions);
 
-       clonedQuestions[index] = {...clonedQuestions[index]}
-       clonedQuestions[index].ans = ans;
-       
+  const handleRadioChange = (ans, questionObject) => {
+    const clonedQuestions = [...questions];
+    const index = questions.findIndex(
+      (q) => q.question === questionObject.question
+    );
+    if (index === -1) return;
 
-       console.log(ans, questionObject)
-    }
+    clonedQuestions[index] = { ...clonedQuestions[index] };
+    clonedQuestions[index].ans = ans;
 
+    dispatch(updateQuestion(clonedQuestions));
+  };
 
-    return (
-        <Box className={classes.container}>
-            <Box className={classes.questionContainer}>
-                <Typography variant="body1">{questionObject.question}</Typography>
-            </Box>
-            <RadioGroup onChange={({target:input}) => handleRadioChange(input.value, questionObject)} value={questionObject.ans}>
-                {questionObject?.objectives?.map(item => 
-                    <FormControlLabel value={item} label={item} control={<Radio/>}/>)}
-            </RadioGroup>
-        </Box>
-                    
-    )
-}
+  return (
+    <Box className={classes.container}>
+      <Box className={classes.questionContainer}>
+        <Typography variant="body1">{questionObject.question}</Typography>
+      </Box>
+      <RadioGroup
+        onChange={({ target: input }) =>
+          handleRadioChange(input.value, questionObject)
+        }
+        value={questionObject.ans}
+      >
+        {questionObject?.objectives?.map((item, index) => (
+          <FormControlLabel
+            key={`${index}_${item}`}
+            value={item}
+            label={item}
+            control={<Radio />}
+          />
+        ))}
+      </RadioGroup>
+    </Box>
+  );
+};
 
 
 const useStyles = makeStyles(theme => ({

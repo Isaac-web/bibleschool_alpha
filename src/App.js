@@ -3,8 +3,6 @@ import { Switch, Route, Redirect, useLocation } from "react-router-dom";
 
 import Admin from "./pages/Admin";
 import Coordinator from "./pages/Coordiantor";
-import CoordinatorCourse from "./pages/Coordiantor/Course";
-import Enrollments from "./pages/Coordiantor/Enrollments";
 import Header from "./components/Header/Header";
 import Home from "./pages/Home";
 import Login from "./pages/auth/Login";
@@ -17,7 +15,6 @@ import ProtectedCoordinatorRoute from "./components/ProtectedRoutes/ProtectedCoo
 import ProtectedAdminRoute from "./components/ProtectedRoutes/ProtectedAdminRoutes";
 
 const App = () => {
-  const user = Boolean(localStorage.getItem("profile"));
   const location = useLocation();
 
   useEffect(() => {}, [location.pathname]);
@@ -30,14 +27,12 @@ const App = () => {
           <Route path="/home" component={Home} />
           <Redirect exact from="/" to="/home" />
           <ProtectedAdminRoute path={"/admin"} render={() => <Admin />} />
-          {/* <ProtectedCoordinatorRoute path="/coordinator/enrollments" component={Enrollments}/>
-                    <ProtectedCoordinatorRoute path="/coordinator/course" component={CoordinatorCourse}/> */}
           <ProtectedCoordinatorRoute
             path="/coordinator/"
             component={Coordinator}
           />
           <ProtectedUserRoute
-            path="/user/enrollment/:enrollmentId"
+            path="/user/course/:courseId/:enrollmentId"
             component={EnrollmentCourse}
           />
           <ProtectedUserRoute path="/user/" render={() => <User />} />

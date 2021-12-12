@@ -1,5 +1,11 @@
 import React from 'react';
-import {Dialog, Box, DialogTitle, DialogContent, DialogActions, Typography} from "@mui/material";
+import {
+  Dialog,
+  Box,
+  DialogTitle,
+  DialogContent,
+  Typography,
+} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 import { useDispatch } from "react-redux";
 

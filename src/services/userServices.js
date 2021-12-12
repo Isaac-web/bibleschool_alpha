@@ -10,5 +10,4 @@ export const getCurrentUser = () => {
 
 export const setToken = (token) => {
   localStorage.setItem("token", token);
-  console.log(token);
 };

@@ -25,7 +25,9 @@ const AdminList = () => {
 
   const mapToViewModel = (data) => {
     return data.map((item) => {
-      const name = `${item.firstname} ${item.lastname}`;
+      const name = `${item?.firstname} ${item?.lastname}`;
+      if (!item) return;
+
       item.name = name;
       return item;
     });
@@ -66,26 +68,30 @@ const AdminList = () => {
       <Typography variant="h4">Admins</Typography>
       <SearchInput placeholder="Search admins..." onChange={handleSearch} />
       <List>
-        {finalData.map((item) => (
-          <ListItem key={item._id} divider>
-            <ListItemAvatar>
-              <Avatar src={item.profilePic} />
-            </ListItemAvatar>
-            <ListItemText primary={item.name} secondary={item.status} />
-            <ListItemSecondaryAction>
-              {user._id !== item._id && (
-                <Button
-                  className={classes.button}
-                  onClick={() => handleRemove(item._id)}
-                  size="small"
-                  style={{ textTransform: "none", color: "rgba(255, 80, 1)" }}
-                >
-                  Remove
-                </Button>
-              )}
-            </ListItemSecondaryAction>
-          </ListItem>
-        ))}
+        {finalData.map((item) => {
+          if (!item) return;
+
+          return (
+            <ListItem key={item._id} divider>
+              <ListItemAvatar>
+                <Avatar src={item.profilePic} />
+              </ListItemAvatar>
+              <ListItemText primary={item?.name} secondary={item.status} />
+              <ListItemSecondaryAction>
+                {user._id !== item._id && (
+                  <Button
+                    className={classes.button}
+                    onClick={() => handleRemove(item._id)}
+                    size="small"
+                    style={{ textTransform: "none", color: "rgba(255, 80, 1)" }}
+                  >
+                    Remove
+                  </Button>
+                )}
+              </ListItemSecondaryAction>
+            </ListItem>
+          );
+        })}
       </List>
 
       <AppSnackbar

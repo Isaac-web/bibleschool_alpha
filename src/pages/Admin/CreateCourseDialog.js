@@ -11,7 +11,7 @@ import {
 import { useDispatch } from "react-redux";
 import { makeStyles } from "@mui/styles";
 
-import Input from "../../components/Input";
+
 import UsersDialog from "./UsersDialog";
 import courseActions from "../../actions/Admin/courses";
 
@@ -94,8 +94,9 @@ const CreateCourseDialog = ({ open, onClose, title }) => {
           <DialogTitle>{title}</DialogTitle>
           <DialogContent>
             <TextField
+              autoFocus
               onChange={handleInputChange}
-              value=""
+              value={courseData.title}
               label="Title"
               fullWidth
               style={{ marginBottom: "1em" }}

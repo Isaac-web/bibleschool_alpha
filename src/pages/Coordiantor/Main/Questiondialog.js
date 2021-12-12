@@ -18,13 +18,14 @@ const Questiondialog = ({open, onClose, onNewQuestion}) => {
 
 
     const handleSubmit = (e) => {
-        e.preventDefault();
-        const objectivesArray = data.objectivesString.split(",");
-        delete data.objectivesString;
-        data.objectives = objectivesArray;
+      console.log(data);
+      e.preventDefault();
+      const objectivesArray = data.objectivesString.split(",");
+      delete data.objectivesString;
+      data.objectives = objectivesArray;
 
-        onNewQuestion(data);
-        clear();
+      onNewQuestion(data);
+      clear();
     }
 
 

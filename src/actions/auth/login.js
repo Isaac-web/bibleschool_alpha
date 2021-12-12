@@ -1,5 +1,5 @@
 import * as api from "../../api";
-import * as auth from "../../services/userServices";
+import * as authService from "../../services/userServices";
 
 export const loginUser = (userData, redirect, notify) => async (dispatch) => {
   try {
@@ -10,7 +10,7 @@ export const loginUser = (userData, redirect, notify) => async (dispatch) => {
     dispatch({ type: "USER_LOGGED_IN", payload: token });
 
     let path = "";
-    const user = auth.getCurrentUser();
+    const user = authService.getCurrentUser();
     switch (user.status) {
       case "normal":
         path = "/user";
@@ -39,7 +39,7 @@ export const registerUser = (userData, history, notify) => async (dispatch) => {
     dispatch({ type: "USER_LOGGED_IN", payload: token });
 
     let path = "";
-    const user = auth.getCurrentUser();
+    const user = authService.getCurrentUser();
     switch (user.status) {
       case "normal":
         path = "/user";
@@ -53,12 +53,12 @@ export const registerUser = (userData, history, notify) => async (dispatch) => {
 
     history.replace(path);
   } catch (ex) {
-    notify(ex.response.data);
+    notify(ex?.response?.data);
   }
 };
 
 export const logout = (history) => async (dispatch) => {
-  console.log("Logging out...");
   dispatch({ type: "USER_LOGGED_OUT" });
-  history.push("/login");
+  dispatch({ type: "CURRENT_MODULE_CLEARED" });
+  window.location.pathname = "/login";
 };

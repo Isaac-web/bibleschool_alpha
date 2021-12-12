@@ -1,11 +1,8 @@
-export const getAllCourses = () =>  async dispatch => {
-    const data = [
-        {_id: "1", title: "Course One", imageUri: ""},
-        {_id: "2", title: "Course Two", imageUri: ""},
-        {_id: "3", title: "Course Three", imageUri: ""},
-        {_id: "4", title: "Course Four", imageUri: ""},
-        {_id: "5", title: "Course Five", imageUri: ""},
-    ];
-    
-    dispatch({type: "FETCH_COURSES", payload: data});
+import * as api from "../../api";
+
+export const getAllCourses = () => async (dispatch) => {
+  dispatch({ type: "LOADING_STARTED" });
+  const { data } = await api.getAdminCourses();
+  dispatch({ type: "FETCH_COURSES", payload: data });
+  dispatch({ type: "LOADING_STOPPED" });
 };

@@ -30,6 +30,7 @@ export const removeAdmin = (id, notify) => async (dispatch) => {
     await api.removeAdmin(id);
     dispatch({ type: ADMINS_REMOVED, payload: id });
     notify("Admin removed.", colors.success);
+    dispatch({ type: "ADMIN_REMOVED" });
   } catch (err) {
     notify("Opps! Could not delete admin.", colors.danger);
   }

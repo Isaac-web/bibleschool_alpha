@@ -7,30 +7,39 @@ import React from 'react';
 const Loading = ({text}) => {
     const classes = useStyles();
     return (
-        <div className={classes.container}>
-            <Box className={classes.wrapper}>
-                <CircularProgress 
-                    size={"5em"} 
-                    thickness={4} 
-                    variant="determinate"
-                    value={100} 
-                    classes={{circle: classes.circleBackground}}
-                    style={{top: 0, left: 0, position: "absolute"}}
-                />
+      <div className={classes.container}>
+        <Box className={classes.wrapper}>
+          {/* <CircularProgress
+            size={"5em"}
+            thickness={3}
+            variant="determinate"
+            value={100}
+            // classes={{ circle: classes.circleBackground }}
+            style={{ top: 0, left: 0, position: "absolute" }}
+          /> */}
 
-                <CircularProgress 
-                    size={"5em"} 
-                    thickness={4} 
-                    value={50} 
-                    classes={classes.circle}
-                    disableShrink
-                    style={{animationDuration: "600ms", top: 0, left: 0, position: "absolute"}}
-                />
-            </Box>
+          <CircularProgress
+            size={"5em"}
+            thickness={3}
+            value={50}
+            // classes={classes.circle}
+            disableShrink
+            style={{
+              animationDuration: "600ms",
+              top: 0,
+              left: 0,
+              position: "absolute",
+            }}
+          />
+        </Box>
 
-            {text && <Typography className={classes.text} variant="h5">{text}</Typography>}
-        </div>
-    )
+        {text && (
+          <Typography className={classes.text} variant="h5">
+            {text}
+          </Typography>
+        )}
+      </div>
+    );
 }
 
 

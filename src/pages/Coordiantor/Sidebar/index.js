@@ -4,184 +4,183 @@ import {makeStyles, useTheme} from "@mui/styles";
 import {Add, Delete, Menu} from "@mui/icons-material"
 import {useSelector, useDispatch} from "react-redux";
 
-
-
-import AddModuleDialog from './AddModuleDialog';
-import AppSnackbar from '../../../components/AppSnackbar';
-import Loading from '../../../components/Loading';
-import AppDrawer from '../../../components/AppDrawer';
-import SearchInput from '../../../components/SearchInput';
-import formatSearchText from "../../../utils/formatSearchText"
-import List from '../../../components/List'
-import {fetchModules, deleteModule} from "../../../actions/Coordinator/modules";
-import {setCurrentModule} from "../../../actions/Coordinator/currentModule";
-import Empty from "../../../components/Empty";
-import emtpyboxImage from "../../../static/empty-box.png";
-
+import AddModuleDialog from "./AddModuleDialog";
+import AppSnackbar from "../../../components/AppSnackbar";
+import Loading from "../../../components/Loading";
+import AppDrawer from "../../../components/AppDrawer";
+import SearchInput from "../../../components/SearchInput";
+import formatSearchText from "../../../utils/formatSearchText";
+import List from "../../../components/List";
+import {
+  fetchModules,
+  deleteModule,
+} from "../../../actions/Coordinator/modules";
+import { setCurrentModule } from "../../../actions/Coordinator/currentModule";
 
 const Index = () => {
-    const classes = useStyles();
-    const dispatch = useDispatch();
-    const theme = useTheme();
-    const [openNewModuleDialog, setOpenNewModuleDialog] = useState(false);
-    const [drawerOpen, setdrawerOpen] = useState(false);
-    const [searchResults, setSearchResults] = useState([]);
-    const [snackbar, setSnackbar] = useState({open: false, message: "", color: ""});
-    const {data: currentModule} = useSelector(state => state.currentModule);
-    const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
-    const [currentItem, setCurrentItem] = useState(undefined);
-    const {data: modules, loading} = useSelector(state => state.coordinatorModules);
-    const {_id: currentModuleId} = useSelector(state => state.currentModule.data);
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const theme = useTheme();
+  const [openNewModuleDialog, setOpenNewModuleDialog] = useState(false);
+  const [drawerOpen, setdrawerOpen] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    color: "",
+  });
+  const { data: currentModule } = useSelector((state) => state.currentModule);
+  const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
+  const [currentItem, setCurrentItem] = useState(undefined);
+  const { data: modules, loading } = useSelector(
+    (state) => state.modules
+  );
+  const { _id: currentModuleId } = useSelector(
+    (state) => state.currentModule.data
+  );
 
+  useEffect(() => {
+    dispatch(fetchModules());
+  }, [window.location.pathname]);
 
+  const handleOpenNewModuleDialog = () => {
+    setOpenNewModuleDialog(true);
+  };
 
+  const handleCloseNewModuleDialog = () => {
+    setOpenNewModuleDialog(false);
+  };
 
-    useEffect(() => {
-        dispatch(fetchModules());
-    }, [])
+  const handleSearch = (text) => {
+    const result = modules.filter((m) =>
+      formatSearchText(m.title).includes(formatSearchText(text))
+    );
+    setSearchResults(result);
+  };
 
+  const notify = (message, color) => {
+    setSnackbar({ ...snackbar, open: true, message, color });
+  };
 
-    const handleOpenNewModuleDialog = () => {
-        setOpenNewModuleDialog(true);
-    }
+  const handleItemSelect = (item) => {
+    dispatch(setCurrentModule(item));
+    setCurrentItem(item._id);
+  };
 
-    const handleCloseNewModuleDialog = () => {
-        setOpenNewModuleDialog(false);
-    }
+  const handleDelete = (module) => {
+    const isCurrentModule = module._id === currentModule?._id;
+    dispatch(deleteModule(module, notify, modules, isCurrentModule));
+  };
 
-    const handleSearch = (text) => {
-        const result = modules.filter(m => formatSearchText(m.title).includes(formatSearchText(text)));
-        setSearchResults(result);
-    }
+  const handleCloseDrawer = () => {
+    setdrawerOpen(false);
+  };
+  const handleOpenDrawer = () => {
+    setdrawerOpen(true);
+  };
 
+  const handleShowDrawer = () => {
+    setdrawerOpen((prev) => !prev);
+  };
 
+  if (loading) return <Loading />;
 
-    const notify = (message, color) => {
-        setSnackbar({...snackbar, open: true, message, color});
-    }
+  const finalData = searchResults.length ? searchResults : modules;
 
+  const finalList = (
+    <List
+      currentItem={currentModuleId}
+      onItemSelect={(item) => handleItemSelect(item)}
+      onSecondaryAction={handleDelete}
+      data={finalData}
+      actionIcon={<Delete style={{ fontSize: 18 }} />}
+    />
+  );
+  return (
+    <>
+      {matchesSM && (
+        <IconButton
+          className={classes.menuIcon}
+          onClick={handleShowDrawer}
+          style={{ position: "fixed", top: 60, right: 20 }}
+        >
+          <Menu />
+        </IconButton>
+      )}
 
-    const handleItemSelect = (item) => {
-        dispatch(setCurrentModule(item));
-        setCurrentItem(item._id);
-    }
-
-
-    const handleDelete = (module) => {
-        const isCurrentModule = module._id === currentModule?._id;
-        console.log(isCurrentModule)
-        dispatch(deleteModule(module, notify, modules, isCurrentModule));
-    }
-
-
-    const handleCloseDrawer = () => {
-        setdrawerOpen(false)
-    }
-    const handleOpenDrawer = () => {
-        setdrawerOpen(true)
-    }
-
-
-    const handleShowDrawer = () => {
-        setdrawerOpen(prev => !prev)
-    }
-
-
-    if(loading) return <Loading/>
-
-    
-    const finalData = searchResults.length ? searchResults : modules;
-
-    const finalList =  <List 
-                            currentItem={currentModuleId}
-                            onItemSelect={(item) => handleItemSelect(item)}
-                            onSecondaryAction={handleDelete}
-                            data={finalData} 
-                            actionIcon={<Delete style={{fontSize: 18}}/>}
-                       />
-    return (
-        <>
-            {matchesSM && <IconButton 
-                className={classes.menuIcon} 
-                onClick={handleShowDrawer}
-                style={{position: "fixed", top: 60, right: 20}}
-            >
-                <Menu/>
-            </IconButton>}
-            
-            {!matchesSM ? 
-            <Box className={classes.sidebar}>
-                <Paper className={classes.paper}>
-                    <Box className={classes.header}>
-                        <Typography variant="h5">Course title</Typography>
-                        <SearchInput placeholder="Search..." onChange={handleSearch}/>
-                    </Box>
-                    <Box className={classes.content}>
-                        {finalList} 
-                    </Box>
-                </Paper>
-            </Box>:
-            <AppDrawer
-                open={drawerOpen}
-                onClose={handleCloseDrawer}
-                onOpen={handleOpenDrawer}
-                style={{width: "100%"}}
-            >
-                <Box>
-                    <Paper className={classes.paper}>
-                            <Box className={classes.header}>
-                                <Typography variant="h5">Course title</Typography>
-                                <SearchInput placeholder="Search..." onChange={handleSearch}/>
-                            </Box>
-                            <Box className={classes.content}>
-                               {finalList}
-                            </Box>
-                        </Paper>
-                            {matchesSM && drawerOpen && <Fab
-                            className={classes.fab} 
-                            onClick={handleOpenNewModuleDialog}
-                            style={{
-                                backgroundColor: 'white', 
-                                position: 'absolute', 
-                                bottom: "1.5em", 
-                                right: "3.5em"
-                            }}
-                        >
-                            <Add color="primary"/>
-                        </Fab>}
-                </Box>
-            </AppDrawer>
-            }
-
-            {!matchesSM && <Fab
-                className={classes.fab} 
+      {!matchesSM ? (
+        <Box className={classes.sidebar}>
+          <Paper className={classes.paper}>
+            <Box className={classes.header}>
+              <Typography variant="h5">Course title</Typography>
+              <SearchInput placeholder="Search..." onChange={handleSearch} />
+            </Box>
+            <Box className={classes.content}>{finalList}</Box>
+          </Paper>
+        </Box>
+      ) : (
+        <AppDrawer
+          open={drawerOpen}
+          onClose={handleCloseDrawer}
+          onOpen={handleOpenDrawer}
+          style={{ width: "100%" }}
+        >
+          <Box>
+            <Paper className={classes.paper}>
+              <Box className={classes.header}>
+                <Typography variant="h5">Course title</Typography>
+                <SearchInput placeholder="Search..." onChange={handleSearch} />
+              </Box>
+              <Box className={classes.content}>{finalList}</Box>
+            </Paper>
+            {matchesSM && drawerOpen && (
+              <Fab
+                className={classes.fab}
                 onClick={handleOpenNewModuleDialog}
                 style={{
-                       backgroundColor: 'white', 
-                       position: 'absolute', 
-                       bottom: "1.5em", 
-                       right: "3.5em"
-                   }}
-            >
-                <Add color="primary"/>
-            </Fab>}
+                  backgroundColor: "white",
+                  position: "absolute",
+                  bottom: "1.5em",
+                  right: "3.5em",
+                }}
+              >
+                <Add color="primary" />
+              </Fab>
+            )}
+          </Box>
+        </AppDrawer>
+      )}
 
-            <AddModuleDialog 
-                open={openNewModuleDialog} 
-                onClose={handleCloseNewModuleDialog}
-                title="New Module"
-            />
+      {!matchesSM && (
+        <Fab
+          className={classes.fab}
+          onClick={handleOpenNewModuleDialog}
+          style={{
+            backgroundColor: "white",
+            position: "absolute",
+            bottom: "1.5em",
+            right: "3.5em",
+          }}
+        >
+          <Add color="primary" />
+        </Fab>
+      )}
 
-            <AppSnackbar
-                open={snackbar.open}
-                message={snackbar.message}
-                color={snackbar.color}
-                onClose={() => setSnackbar({...snackbar, open: false})}
-            />   
-            
-        </>
-    )
-}
+      <AddModuleDialog
+        open={openNewModuleDialog}
+        onClose={handleCloseNewModuleDialog}
+        title="New Module"
+      />
+
+      <AppSnackbar
+        open={snackbar.open}
+        message={snackbar.message}
+        color={snackbar.color}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+      />
+    </>
+  );
+};
 
 
 const useStyles = makeStyles(theme => ({

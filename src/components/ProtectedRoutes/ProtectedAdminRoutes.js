@@ -10,7 +10,6 @@ const ProtectedCoordinatorRoute = ({
   ...rest
 }) => {
   const user = auth.getCurrentUser();
-  console.log(user);
 
   if (!user) return <Redirect to="/login" />;
   console.log();

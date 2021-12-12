@@ -20,6 +20,7 @@ const addCourse = (courseData, notify) => async (dispatch) => {
 
     notify("Course Added Successfully", colors.success);
     dispatch({ type: "COURSE_ADDED", payload: data });
+    dispatch({ type: "COORDINATOR_ADDED" });
   } catch (err) {
     notify("Opps! Could not add course.", "red");
   }
@@ -30,15 +31,17 @@ const removeCourse = (courseId, notify) => async (dispatch) => {
     await api.deleteCourse(courseId);
     dispatch({ type: "COURSE_DELETED", payload: courseId });
     notify("Course Deleted.", colors.success);
+    dispatch({ type: "COURSE_REMOVED" });
+    dispatch({ type: "COORDINATOR_REMOVED" });
   } catch (err) {
     notify("Opps! Could not delete course.", "red");
   }
 };
 
+const actions = {
+  fetchCourses,
+  addCourse,
+  removeCourse,
+};
 
-
-export default {
-    fetchCourses,
-    addCourse,
-    removeCourse
-}
+export default actions;

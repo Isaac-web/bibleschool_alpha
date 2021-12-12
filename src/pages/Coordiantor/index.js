@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Grid, Typography} from "@mui/material";
+import { Container, Grid, useMediaQuery } from "@mui/material";
 import { makeStyles, useTheme } from "@mui/styles";
 import { Switch, Route, Redirect, Link, useLocation } from "react-router-dom";
 
@@ -10,6 +10,7 @@ const Index = () => {
   const theme = useTheme();
   const location = useLocation();
   const classes = useStyles();
+  const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
 
   const coursePath = location.pathname.includes("course");
   const enrollmentPath = location.pathname.includes("enrollment");
@@ -21,7 +22,11 @@ const Index = () => {
   return (
     <Container maxWidth="xl">
       <Grid container alignItems="center" alignItems="flex-start">
-        <Grid className={classes.leftSidebar} item>
+        <Grid
+          className={classes.leftSidebar}
+          item
+          style={{ flex: matchesSM && 1, marginBottom: matchesSM && 20 }}
+        >
           <Grid container direction="column">
             <Grid
               className={classes.leftSidebarButton}
@@ -41,7 +46,12 @@ const Index = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid className={classes.main} item container>
+        <Grid
+          className={classes.main}
+          item
+          container
+          style={{ flex: matchesSM && 1 }}
+        >
           <Switch>
             <Route path="/coordinator/enrollments" component={Enrollments} />
             <Redirect from="/coordinator" exact to="/coordinator/course" />

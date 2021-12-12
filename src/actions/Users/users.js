@@ -1,5 +1,9 @@
-import {LOADING_STARTED, LOADING_STOPPED, USERS_FETCHED, USERS_SEARCHED} from "../../config/reduxContants";
-import formatSearchText from "../../utils/formatSearchText";
+import {
+  LOADING_STARTED,
+  LOADING_STOPPED,
+  USERS_FETCHED,
+  USERS_SEARCHED,
+} from "../../config/reduxContants";
 import * as api from "../../api/index";
 
 export const getUsers = () => async (dispatch) => {
@@ -26,7 +30,3 @@ export const clearSearchedUsers = () => async (dispatch) => {
   dispatch({ type: USERS_SEARCHED, payload: data });
   dispatch({ type: "USER_LOAD_STOPPED" });
 };
-
-
-
-

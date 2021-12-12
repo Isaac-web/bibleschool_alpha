@@ -7,6 +7,7 @@ const FileDropZone = ({value, onChange, style, fullWidth=false}) => {
     const theme = useTheme();
     const onDrop = useCallback(file => {
         if(typeof onChange !== "function") return console.err("onChange is not a function.");
+        console.log(file);
         onChange(file);
     }, [])
 

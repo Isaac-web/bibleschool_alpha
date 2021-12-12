@@ -6,12 +6,14 @@ import {
   useTheme,
   useMediaQuery,
   Typography,
+  Avatar,
 } from "@mui/material";
 import { useHistory, useLocation, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import useStyles from "./styles";
 import { logout } from "../../actions/auth/login";
+import * as userService from "../../services/userServices";
 
 const Header = () => {
   const classes = useStyles();
@@ -49,7 +51,8 @@ const Header = () => {
 };
 
 const AuthBox = () => {
-  const user = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
+  const user = userService.getCurrentUser();
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
@@ -62,9 +65,20 @@ const AuthBox = () => {
     dispatch(logout(history));
   };
 
-  if (user)
+  if (token)
     return (
-      <div style={{ marginLeft: "auto" }}>
+      <div
+        style={{
+          marginLeft: "auto",
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "center",
+        }}
+      >
+        <Avatar style={{ margin: "0 10px" }}>{user.name.charAt(0)}</Avatar>
+        <Typography variant="body2" style={{ color: "black", marginRight: 12 }}>
+          {user.name}
+        </Typography>
         <Button
           style={{ textTransform: "none" }}
           color="secondary"

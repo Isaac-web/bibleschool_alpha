@@ -1,24 +1,49 @@
-import React from 'react';
-import {Grid} from "@mui/material";
+import React, { useEffect } from "react";
+import { Grid } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 
+import PannelCard from "../../components/PannelCard";
+import { getAdminSummery } from "../../actions/Admin/summery";
 
-import PannelCard from '../../components/PannelCard';
+const TopSummery = ({ currentPannelCard, onCardClick }) => {
+  const dispatch = useDispatch();
+  const adminSummery = useSelector((state) => state.adminSummery);
+  useEffect(() => {
+    dispatch(getAdminSummery());
+  }, []);
 
+  const handleClick = (item) => {
+    onCardClick(item);
+  };
 
-const TopSummery = ({currentPannelCard, onCardClick}) => {
-    const handleClick = (item) => {
-        onCardClick(item)
-    }
+  return (
+    <Grid container justifyContent="space-between" style={{ marginTop: 10 }}>
+      <PannelCard
+        border={currentPannelCard === "courses"}
+        title={adminSummery.coursesCount}
+        subTitle="Courses"
+        onClick={() => handleClick("courses")}
+      />
+      <PannelCard
+        border={currentPannelCard === "enrollments"}
+        title={adminSummery.enrollmentsCount}
+        subTitle="Enrollments"
+        onClick={() => handleClick("enrollments")}
+      />
+      <PannelCard
+        border={currentPannelCard === "coordinators"}
+        title={adminSummery.coordinatorsCount}
+        subTitle="Coordinators"
+        onClick={() => handleClick("coordinators")}
+      />
+      <PannelCard
+        border={currentPannelCard === "admin"}
+        title={adminSummery.adminsCount}
+        subTitle="Admin"
+        onClick={() => handleClick("admin")}
+      />
+    </Grid>
+  );
+};
 
-
-    return (
-        <Grid container justifyContent="space-between" style={{marginTop: 10}}>
-            <PannelCard border={currentPannelCard === "courses"} title="38" subTitle="Courses" onClick={() => handleClick("courses")}/>
-            <PannelCard border={currentPannelCard === "enrollments"} title="103" subTitle="Enrollments" onClick={() => handleClick("enrollments")}/>
-            <PannelCard border={currentPannelCard === "coordinators"} title="15" subTitle="Coordinators" onClick={() => handleClick("coordinators")}/>
-            <PannelCard border={currentPannelCard === "admin"} title="12" subTitle="Admin" onClick={() => handleClick("admin")}/>
-        </Grid>
-    )
-}
-
-export default TopSummery
+export default TopSummery;

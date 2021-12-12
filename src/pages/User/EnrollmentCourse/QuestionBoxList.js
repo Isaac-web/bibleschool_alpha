@@ -5,17 +5,16 @@ import {useSelector} from "react-redux";
 import QuestionBoxItem from "./QuestionBoxItem"
 
 
-const QuestionBoxList = () => {
-    const questions = [
-        {question: "This is a question.", objectives: ["ans1", "ans2", "ans3", "ans4"], ans: ""},
-        {question: "This is a question.", objectives: ["ans1", "ans2", "ans3", "ans4"], ans: ""},
-        {question: "This is a question.", objectives: ["ans1", "ans2", "ans3", "ans4"], ans: ""},
-        {question: "This is a question.", objectives: ["ans1", "ans2", "ans3", "ans4"], ans: ""},
-    ]
-
-
-    return questions?.length ? 
-            questions?.map((q, index) => <QuestionBoxItem key={q.question+index} questionObject={q}/>) : null
-}
+const QuestionBoxList = ({ questions }) => {
+  return questions?.length ? (
+    questions?.map((q, index) => (
+      <QuestionBoxItem key={q._id || q.question + index} questionObject={q} />
+    ))
+  ) : (
+    <Typography variant="body1" align="center">
+      Sorry, no questions for this module.
+    </Typography>
+  );
+};
 
 export default QuestionBoxList

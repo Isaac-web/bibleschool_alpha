@@ -1,34 +1,30 @@
-import {colors} from "../../config";
-import {LOADING_STARTED, LOADING_STOPPED} from "../../config/reduxContants";
+import { LOADING_STARTED, LOADING_STOPPED } from "../../config/reduxContants";
 import * as api from "../../api";
 
-
-export const fetchEnrollments = () => async dispatch => {
-    dispatch({type: LOADING_STARTED })
-    const {data} = await api.getCoordinatorEnrollments();
-    dispatch({type: 'ENROLLMENTS_FETCHED', payload: data })
-    dispatch({type: LOADING_STOPPED })
-}
-
+export const fetchEnrollments = () => async (dispatch) => {
+  dispatch({ type: LOADING_STARTED });
+  const { data } = await api.getCoordinatorEnrollments();
+  dispatch({ type: "ENROLLMENTS_FETCHED", payload: data });
+  dispatch({ type: LOADING_STOPPED });
+};
 
 // export const addModule = (module, notify) => async dispatch => {
-    
+
 //     notify("Adding Module...");
 //     console.log("Calling server...");
 //     const data = {...module, _id: Date.now().toString(), module};
-    
+
 //     dispatch({type: "MODULE_ADDED", payload: data});
 //     dispatch(setCurrentModule(data));
 //     notify("New Module Added", colors.success);
 // }
-
 
 // export const deleteModule = (module, notify, prevState, isCurrentModule) => async dispatch  => {
 //     try {
 //         console.log("Deleting module from the server...");
 //         dispatch({type: "MODULE_DELETED", payload: module});
 //         if(isCurrentModule) dispatch(clearCurrentModule());
-        
+
 //     }
 //     catch(err) {
 //         notify("Opps!! Module could not be deleted.", colors.danger);
