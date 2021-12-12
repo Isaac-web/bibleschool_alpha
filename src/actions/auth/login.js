@@ -25,7 +25,7 @@ export const loginUser = (userData, redirect, notify) => async (dispatch) => {
         path = "/user";
     }
 
-    redirect(path);
+    window.location.pathname = path;
   } catch (err) {
     notify(err.response?.data);
   }
@@ -51,7 +51,8 @@ export const registerUser = (userData, history, notify) => async (dispatch) => {
         path = "/user";
     }
 
-    history.replace(path);
+    // history.replace(path);
+    window.location.pathname = path;
   } catch (ex) {
     notify(ex?.response?.data);
   }

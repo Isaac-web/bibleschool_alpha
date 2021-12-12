@@ -44,11 +44,11 @@ const Main = () => {
 
   useEffect(() => {
     setShowQuiz(false);
-    currentModule.questions = formatModuleQuestions(currentModule.questions);
+    // currentModule.questions = formatModuleQuestions(currentModule.questions);
   }, [currentModule._id, quizSubumitCount]);
 
   useEffect(() => {
-    setTimer(Date.now() + 1000 * 60);
+    setTimer(Date.now() + 1000 * 60 * 5);
   }, [showQuiz]);
 
   const loadCurrentModule = () => {
@@ -74,7 +74,6 @@ const Main = () => {
   };
 
   const formatModuleQuestions = (questions) => {
-    console.log("Function called.");
     return questions.map((q) => {
       if (!q) return;
       if (q.ans) q.ans = "";
@@ -196,9 +195,8 @@ const Main = () => {
             ) : null}
           </Box>
         )}
+        <ResultsComponent score={quiz.score} wrongAnswers={quiz.wrongAnswers} />
       </Container>
-
-      <ResultsComponent score={quiz.score} wrongAnswers={quiz.wrongAnswers} />
 
       <ConfirmationDialog
         open={openDialog}
@@ -255,36 +253,39 @@ const ResultsComponent = ({ score, wrongAnswers }) => {
     dispatch(getEnrollmentCourse(currentEnrollment.currentModule));
   };
 
-  const handleRetry = () => {
-    dispatch(getEnrollmentCourse(currentEnrollment.currentModule));
-  };
+  // const handleRetry = () => {
+  //   dispatch(getEnrollmentCourse(currentEnrollment.currentModule));
+  // };
 
   return (
     <Container maxWidth="sm" style={{ margin: "2em 0" }}>
       <Typography variant="h5" align="center">
         {score ? `Score ${Math.round(score * 100)}%` : ""}
+        <br />
+        {score < 0.7 && "Pass score is 70%. Refresh to retry"}
       </Typography>
-      <Typography variant="h6" align="center">
-        {Math.round(score) < 0.7 && "Failed to meet minimum requirements"}
+      <Typography variant="body1" align="center">
+        {Math.round(score) < 0.7 &&
+          "Failed to meet minimum requirements. Refresh to retry"}
       </Typography>
 
       {/* <WrongAnswerBox data={wrongAnswers} /> */}
 
       <Grid item>
-        {score > 0.7 ? (
+        {score > 0.7 && (
           <Button variant="contained" onClick={handleContinue}>
             Continue
           </Button>
-        ) : (
-          score !== undefined && (
-            <Button
-              variant="outlined"
-              startIcon={<Replay />}
-              onClick={handleRetry}
-            >
-              Retry
-            </Button>
-          )
+          // ) : (
+          //   score !== undefined && (
+          //     <Button
+          //       variant="outlined"
+          //       startIcon={<Replay />}
+          //       onClick={handleRetry}
+          //     >
+          //       Retry
+          //     </Button>
+          //   )
         )}
       </Grid>
     </Container>

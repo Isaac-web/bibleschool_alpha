@@ -101,7 +101,10 @@ const Index = () => {
     return data.map((item) => {
       if (!item) return;
 
+      console.log(item);
+
       const formatedItem = {
+        _id: item._id,
         name: `${item.course.title}`,
         progress: `${item.progress || 0}%`,
         status: item.status,

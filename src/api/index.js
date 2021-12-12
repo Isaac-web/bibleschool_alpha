@@ -3,6 +3,8 @@ import * as authService from "../services/userServices";
 
 const API = axios.create({ baseURL: "http://localhost:5000/api" });
 
+API.defaults.headers.common["x-auth-token"] = authService.getToken();
+
 export const getAdminEnrollments = () => {
   return API.get("/enrollments");
 };

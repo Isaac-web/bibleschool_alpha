@@ -69,6 +69,7 @@ const Login = () => {
                   <Grid item container direction="column">
                     <Grid item style={{ marginBottom: 20 }}>
                       <TextField
+                        autoFocus
                         error={
                           touched.username && Boolean(errors?.username?.length)
                         }
