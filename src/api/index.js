@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as authService from "../services/userServices";
 
-const API = axios.create({ baseURL: "http://localhost:5000/api" });
+const API = axios.create({ baseURL: "https://gnaas-app.herokuapp.com/api" });
 
 API.defaults.headers.common["x-auth-token"] = authService.getToken();
 
@@ -97,7 +97,7 @@ export const deleteModuleQuestion = (moduleId, questionId) => {
 export const getCoordinatorEnrollments = async () => {
   const user = authService.getCurrentUser();
   if (!user?.courseId) return;
-  return API.get(`/enrollments/${user.courseId}`);
+  return API.get(`/enrollments/coordinators/${user.courseId}`);
 };
 
 export const signInUser = async (data) => {

@@ -38,6 +38,7 @@ const AllCourses = () => {
   };
   const handleEnroll = (id) => {
     const user = authService.getCurrentUser();
+    if (!user) return;
     const data = { userId: user._id, courseId: id };
     setLoadingEnrollments([...loadingEnrollments, id]);
     dispatch(addEnrollment(data, redirect, notify));

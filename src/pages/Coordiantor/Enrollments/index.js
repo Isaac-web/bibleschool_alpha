@@ -77,11 +77,11 @@ const enrollmentsData = [
 const menu = [
   { value: "", label: "All" },
   { value: "complete", label: "Complete" },
-  { value: "in progress", label: "In Progress" },
+  { value: "inprogress", label: "In Progress" },
 ];
 
 const columns = [
-  { path: "name", label: "Name" },
+  { path: "name", label: "Course Title" },
   { path: "progress", label: "Progress" },
   { path: "status", label: "Status" },
 ];

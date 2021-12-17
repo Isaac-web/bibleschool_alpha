@@ -39,7 +39,7 @@ const TopSummery = ({ currentPannelCard, onCardClick }) => {
       <PannelCard
         border={currentPannelCard === "admin"}
         title={adminSummery.adminsCount}
-        subTitle="Admin"
+        subTitle="Admins"
         onClick={() => handleClick("admin")}
       />
     </Grid>
